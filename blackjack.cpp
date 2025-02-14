@@ -102,7 +102,15 @@ int dealerAction(int dealercard, vector<int> &deck) {
         int newDealerCard = deal(deck);
         dealerCards.push_back(newDealerCard);
         dealerValue += valOfCard(newDealerCard);
+        if (dealerValue > 21) {
+            for(int index = 0; index < dealerCards.size(); index++) {
+                if(dealerCards[index] == 11) {
+                    dealerValue -= 10;
+                }
+            }
+        }
     }
+    
     if(dealerValue <= 21 && dealerValue >= 17) {
         cout << "The dealer was dealt ";
         if(dealerCards.size() > 2) {
