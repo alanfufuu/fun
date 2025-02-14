@@ -63,6 +63,11 @@ int hit(vector<int> &deck, int card1, int card2, int &totalValue) {
     int newCard = deal(deck);
     totalValue += valOfCard(newCard);
     if (totalValue > 21) {
+        if(valOfCard(card1) == 11 || valOfCard(card2) == 11 || valOfCard(newCard) == 11) {
+            totalValue -= 10;
+        }
+    }
+    if (totalValue > 21) {
         cout << "You were dealt the " <<  valToString(newCard);
         cout << ". Your total is now " << totalValue << ". You have busted." << endl;
         return 1;
@@ -99,16 +104,19 @@ int dealerAction(int dealercard, vector<int> &deck) {
         dealerValue += valOfCard(newDealerCard);
     }
     if(dealerValue <= 21 && dealerValue >= 17) {
-        cout << "The dealer was dealt the ";
-        if(dealerCards.size() >= 2) {
+        cout << "The dealer was dealt ";
+        if(dealerCards.size() > 2) {
             for(int i = 0; i < dealerCards.size() - 1; i++){
                 cout << "the " << valToString(dealerCards[i]) << ",";
             }
             cout << " and the " << valToString(dealerCards[dealerCards.size() -1]) << ".";
             cout << " Their total is " << dealerValue << "." << endl;
-            return 1;
+            return dealerValue;
+        } else if (dealerCards.size() == 2) {
+            cout << valToString(dealerCards[0]) << " and the " << valToString(dealerCards[1]);
+            cout << " Their total is " << dealerValue << "." << endl;
         } else {
-            cout << valToString(dealerCards[0]) << ".";
+            cout << "the " << valToString(dealerCards[0]) << ".";
             cout << " Their total is " << dealerValue << "." << endl;
         }
     }
@@ -118,10 +126,20 @@ int dealerAction(int dealercard, vector<int> &deck) {
             cout << "the " << valToString(dealerCards[i]) << ",";
         }
         cout << " and the " << valToString(dealerCards[dealerCards.size() -1]) << ".";
-        cout << " Their total is " << dealerValue << ". Since they busted, you win!";
+        cout << " Their total is " << dealerValue << ". Since they busted, you win!" << endl;
         return 1;
     }
     return dealerValue;
+}
+
+void result(int pvalue, int dvalue) {
+    if (pvalue > dvalue) {
+        cout << "Since your " << pvalue << " is better than the dealer's " << dvalue << ", you have won." << endl;
+    } else if (dvalue > pvalue) {
+        cout << "Since the dealer's " << dvalue << " is better than your " << pvalue << ", you have lost." << endl;
+    } else {
+        cout << "Since both you and the dealer have " << pvalue << ", it is a push. No one wins." << endl;
+    }
 }
 
 int main() {
@@ -134,13 +152,28 @@ int main() {
     int totalValue = valOfCard(card1) + valOfCard(card2);
 
     cout << "Your cards are the " << valToString(card1) << " and the " << valToString(card2) << ". Your total value is " << totalValue << "." << endl;
+    if (totalValue == 21) {
+        cout << "You have a blackjack. You win!" << endl;
+        return 0;
+    }
     cout << "The dealer is showing the " << valToString(dealercard) << ". Would you like to hit or stand?" << endl;
 
     playerAction(deck, card1, card2, totalValue);
 
+    if(totalValue > 21) {
+        return 0;
+    }
+
     int dvalue = dealerAction(dealercard, deck);
-    cout << dvalue << endl;
+    if (dvalue == 1) {
+        return 0;
+    }
+    result(totalValue, dvalue);
+
     return 0;
 }
 
+/*
+TODO: code the aces, add chips
+*/
 //g++ -std=c++11 blackjack.cpp
