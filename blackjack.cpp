@@ -53,7 +53,6 @@ void shuffle(vector<int> &deck) {
 int deal(vector<int> &deck) {
     int temp = deck[deck.size() - 1];
     deck.pop_back();
-    shuffle(deck);
     return temp;
 }
 
@@ -81,14 +80,12 @@ int hit(vector<int> &deck, int card1, int card2, int &totalValue) {
 
 void playerAction(vector<int> &deck, int card1, int card2, int &totalValue) {
     string action;
-    cin >> action;
+    getline(cin, action);
     while (action != "hit" && action != "stand") {
         cout << "Invalid input. Input must be 'hit' or 'stand'. Please state your action again." << endl;
-        cin >> action;
+        getline(cin, action);
     }
-    if (action == "double") {
-        hit(deck, card1, card2, totalValue);
-    } else if (action == "hit") {
+    if (action == "hit") {
         hit(deck, card1, card2, totalValue);
     } else if (action == "stand") {
         return;
@@ -102,7 +99,7 @@ int dealerAction(int dealercard, vector<int> &deck) {
         int newDealerCard = deal(deck);
         dealerCards.push_back(newDealerCard);
         dealerValue += valOfCard(newDealerCard);
-        if (dealerValue > 21) {
+        while (dealerValue > 21) {
             for(int index = 0; index < dealerCards.size(); index++) {
                 if(dealerCards[index] == 11) {
                     dealerValue -= 10;
