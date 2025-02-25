@@ -118,7 +118,7 @@ int dealerAction(int dealercard, vector<int> &deck) {
             cout << " Their total is " << dealerValue << "." << endl;
             return dealerValue;
         } else if (dealerCards.size() == 2) {
-            cout << valToString(dealerCards[0]) << " and the " << valToString(dealerCards[1]);
+            cout << valToString(dealerCards[0]) << " and the " << valToString(dealerCards[1]) << ".";
             cout << " Their total is " << dealerValue << "." << endl;
         } else {
             cout << "the " << valToString(dealerCards[0]) << ".";
@@ -173,6 +173,7 @@ int main() {
     if (dvalue == 1) {
         return 0;
     }
+
     result(totalValue, dvalue);
 
     return 0;
