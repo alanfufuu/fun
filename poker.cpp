@@ -75,5 +75,7 @@ int main() {
     createDeck(deck);
     shuffle(deck);
 
+    vector<vector<int>> newDeck;
+
 }
 
